@@ -1,0 +1,1659 @@
+/* ============================================================
+   RATNAKARA - MAIN UI
+============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  background: #020b14;
+  color: #17324d;
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ============================================================
+   APPLICATION
+============================================================ */
+
+.app {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.header {
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(23, 50, 77, 0.12);
+  box-shadow: 0 2px 14px rgba(23, 50, 77, 0.08);
+  position: relative;
+  z-index: 50;
+}
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 29px;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: 4px;
+  background:
+    linear-gradient(
+      90deg,
+      #064e6b,
+      #078b8c,
+      #20b486
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand p {
+  margin: 7px 0 0;
+  font-size: 14px;
+  color: #087e8b;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================================
+   BRAND ROW (logo mark beside the wordmark)
+============================================================ */
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-row .dash-logo {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   TOP NAVIGATION
+============================================================ */
+
+.header nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header nav button {
+  height: 48px;
+  padding: 0 19px;
+  border-radius: 12px;
+  border: 1px solid rgba(23, 50, 77, 0.14);
+  background: rgba(255, 255, 255, 0.95);
+  color: #123f5d;
+  font-size: 15px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.header nav button:hover {
+  background: #eef9fa;
+  border-color: #75cbd2;
+  box-shadow:
+    0 4px 14px rgba(8, 126, 139, 0.12);
+  transform: translateY(-1px);
+}
+
+.header nav button:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   MAIN OCEAN VIEW
+============================================================ */
+
+.ocean-view {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 86px);
+  overflow: hidden;
+  background: #020b14;
+}
+
+/* ============================================================
+   THREE.JS CANVAS
+============================================================ */
+
+.ocean-view canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+/* ============================================================
+   LEFT MENU BUTTON
+============================================================ */
+
+.panel-toggle {
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(8, 126, 139, 0.20);
+
+  background: rgba(255, 255, 255, 0.94);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.22);
+
+  z-index: 40;
+
+  transition:
+    width 0.25s ease,
+    height 0.25s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.panel-toggle:hover {
+  background: #ffffff;
+  box-shadow:
+    0 7px 22px rgba(0, 0, 0, 0.28);
+  transform: translateY(-1px);
+}
+
+.panel-toggle span {
+  width: 22px;
+  height: 3px;
+  border-radius: 4px;
+  background: #087e8b;
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease;
+}
+
+/* ============================================================
+   OPEN BUTTON
+============================================================ */
+
+.panel-toggle.open {
+  border-radius: 12px;
+}
+
+.panel-toggle.open span:nth-child(1) {
+  transform:
+    translateY(8px)
+    rotate(45deg);
+}
+
+.panel-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.panel-toggle.open span:nth-child(3) {
+  transform:
+    translateY(-8px)
+    rotate(-45deg);
+}
+
+/* ============================================================
+   LEFT OCEAN PANEL
+============================================================ */
+
+.ocean-panel {
+  position: absolute;
+  top: 22px;
+  left: 25px;
+  width: 265px;
+  padding: 14px;
+  /* Stop above the fixed bottom-left overlays
+     (temperature/current legend, validation, alert)
+     so panel content and coastal warnings
+     never get covered by them. */
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(23, 50, 77, 0.12);
+  border-radius: 15px;
+
+  box-shadow:
+    0 10px 30px rgba(23, 50, 77, 0.14);
+
+  z-index: 20;
+
+  transform: translateX(-320px);
+  opacity: 0;
+
+  transition:
+    transform 0.45s ease,
+    opacity 0.35s ease;
+
+  pointer-events: none;
+}
+
+/* ============================================================
+   PANEL OPEN
+============================================================ */
+
+.ocean-panel.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   PANEL HEADER
+============================================================ */
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #17374d;
+}
+
+.panel-header > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-dot {
+  width: 7px;
+  height: 7px;
+
+  background: #20b486;
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 8px rgba(32, 180, 134, 0.5);
+}
+
+/* ============================================================
+   PANEL SEARCH
+============================================================ */.panel-search {
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 0 10px;
+  background: #edf5f7;
+
+  border: 1px solid rgba(23, 50, 77, 0.08);
+  border-radius: 8px;
+
+  color: #7a929f;
+  font-size: 11px;
+
+  margin-bottom: 12px;
+}
+
+.panel-search input {
+  width: 100%;
+  min-width: 0;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+  color: #17324d;
+
+  font-size: 11px;
+}
+
+.panel-search input::placeholder {
+  color: #7a929f;
+}
+
+/* ============================================================
+   PANEL SECTION TITLE
+============================================================ */
+
+.panel-section-title {
+  margin-bottom: 6px;
+
+  color: #66818e;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+/* ============================================================
+   LAYER BUTTON
+============================================================ */
+
+.layer-button {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 10px;
+  margin-bottom: 4px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #17324d;
+
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.layer-button:hover {
+  background: #e8f5f7;
+
+  border-color:
+    rgba(8, 126, 139, 0.15);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(23, 50, 77, 0.08);
+}
+
+.layer-button.selected {
+  background: #dff2f4;
+
+  border-color:
+    rgba(8, 126, 139, 0.22);
+}
+
+/* ============================================================
+   LAYER ICON
+============================================================ */.layer-icon {
+  width: 28px;
+  height: 28px;
+
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #edf7f8;
+
+  border-radius: 8px;
+  font-size: 14px;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.layer-button.selected .layer-icon {
+  background: #edf7f8;
+}
+
+.layer-button:hover .layer-icon {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   LAYER TEXT
+============================================================ */
+
+.layer-button strong {
+  display: block;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  margin-bottom: 2px;
+}
+
+.layer-button small {
+  display: block;
+
+  font-size: 9px;
+
+  color: #78909c;
+}
+
+/* ============================================================
+   PANEL DIVIDER
+============================================================ */
+
+.panel-divider {
+  height: 1px;
+
+  background:
+    rgba(23, 50, 77, 0.09);
+
+  margin: 10px 0;
+}
+
+/* ============================================================
+   DEPTH
+============================================================ */
+
+.depth-values {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+  font-size: 11px;
+  color: #718994;
+}
+
+.depth-values strong {
+  color: #087e8b;
+  font-size: 12px;
+}
+
+/* ============================================================
+   DEPTH SLIDER
+============================================================ */
+
+.depth-slider {
+  width: 100%;
+  margin: 3px 0;
+
+  accent-color: #087e8b;
+
+  cursor: pointer;
+}
+
+/* ============================================================
+   DEPTH LABELS
+============================================================ */
+
+.depth-labels {
+  display: flex;
+  justify-content: space-between;
+
+  color: #8aa0aa;
+  font-size: 9px;
+}
+
+/* ============================================================
+   HEADER DASHBOARD — hamburger, logo dot, slide-out panel
+============================================================ */
+
+.dash-header-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-logo {
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  min-height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.10);
+}
+
+.dash-toggle {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  border-radius: 9px;
+  border: 1px solid rgba(148, 163, 184, 0.30);
+  background: rgba(148, 163, 184, 0.08);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.dash-toggle:hover {
+  background: rgba(148, 163, 184, 0.18);
+  transform: translateY(-1px);
+}
+
+.dash-toggle:active {
+  transform: translateY(0);
+}
+
+.dash-toggle span {
+  display: block;
+  width: 15px;
+  height: 2px;
+  border-radius: 2px;
+  background: #94a3b8;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+.dash-toggle.open span:first-child {
+  background: #7fd8e8;
+  transform: translateY(6px) rotate(45deg);
+}
+
+.dash-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.dash-toggle.open span:nth-child(3) {
+  background: #7fd8e8;
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ============================================================
+   HEADER DASHBOARD PANEL — the left slide-out navigation
+============================================================ */
+
+.ocean-dash {
+  position: fixed;
+  top: 100px;
+  bottom: 14px;
+  left: 14px;
+
+  z-index: 16;
+
+  width: 250px;
+  max-height: calc(100vh - 114px);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 12px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-290px);
+
+  transition:
+    transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.ocean-dash.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.dash-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 10px;
+  padding: 7px 10px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.06);
+
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.dash-back:hover {
+  background: rgba(148, 163, 184, 0.14);
+  color: #e2e8f0;
+}
+
+.dash-back-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.dash-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+}
+
+.dash-nav-spacer {
+  flex: 1;
+}
+
+.dash-nav-btn {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 9px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.dash-nav-btn:hover {
+  background: rgba(148, 163, 184, 0.10);
+  border-color: rgba(148, 163, 184, 0.20);
+  color: #f1f5f9;
+
+  transform: translateX(2px);
+}
+
+.dash-nav-btn:active {
+  transform: translateX(0);
+}
+
+.dash-nav-btn.dash-nav-small {
+  padding: 7px 10px;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.dash-nav-icon {
+  width: 16px;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+}
+
+.dash-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  animation: dash-fade-slide 0.25s ease both;
+}
+
+.dash-layer-expand {
+  overflow: hidden;
+
+  animation: dash-expand 0.2s ease both;
+}
+
+@keyframes dash-expand {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dash-fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dash-content-title {
+  padding-bottom: 6px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.dash-content-note {
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.dash-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 9px 10px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 9px;
+  background: rgba(148, 163, 184, 0.06);
+
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.dash-setting-row:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+/* ============================================================
+   SALINITY HOVER INFO CARD
+============================================================ */
+
+.salinity-info {
+  width: 172px;
+
+  padding: 9px 11px;
+
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 10px;
+  background: rgba(10, 18, 32, 0.94);
+
+  color: #e2e8f0;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.salinity-info.light {
+  border-color: rgba(22, 135, 201, 0.25);
+  background: rgba(248, 253, 255, 0.96);
+
+  color: #163743;
+}
+
+.salinity-info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 5px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.salinity-info-close {
+  padding: 0 2px;
+
+  border: none;
+  background: transparent;
+
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.salinity-info-value {
+  margin-bottom: 5px;
+
+  color: #7fd8e8;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.salinity-info.light .salinity-info-value {
+  color: #087e8b;
+}
+
+.salinity-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.salinity-info-row > span:first-child {
+  color: #94a3b8;
+}
+
+.salinity-info.light .salinity-info-row > span:first-child {
+  color: #63818b;
+}
+
+.salinity-info-row > span:last-child {
+  font-weight: 600;
+}
+
+/* ============================================================
+   RATNAKARA THEME SWITCH
+============================================================ */
+
+.theme-switch-wrap {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-switch {
+  width: 58px;
+  height: 32px;
+
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  background: rgba(8, 12, 18, 0.82);
+
+  display: flex;
+  align-items: center;
+
+  padding: 4px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.theme-switch.light {
+  background: rgba(235, 248, 255, 0.92);
+
+  border-color:
+    rgba(22, 135, 201, 0.35);
+
+  box-shadow:
+    0 0 14px rgba(22, 135, 201, 0.16);
+}
+
+.theme-switch-dot {
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  display: block;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dark-dot {
+  background: #000000;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16);
+
+  transform: translateX(0);
+}
+
+.light-dot {
+  background: #1687c9;
+
+  box-shadow:
+    0 0 10px rgba(22, 135, 201, 0.48);
+
+  transform: translateX(26px);
+}
+
+/* ============================================================
+   DARK THEME
+   SLEEK OCEAN LAYERS SIDEBAR
+============================================================ */
+
+.app.dark-mode {
+  background: #02070d;
+}
+
+.app.dark-mode .header {
+  background:
+    rgba(0, 0, 0, 0.82);
+
+  color: #ffffff;
+}
+
+.app.dark-mode .ocean-panel {
+  background:
+    rgba(15, 23, 42, 0.97);
+
+  color: #ffffff;
+
+  border-color:
+    rgba(148, 163, 184, 0.18);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.42);
+}
+
+/* Dark panel header */
+
+.app.dark-mode .panel-header {
+  color: #ffffff;
+}
+
+.app.dark-mode .panel-section-title {
+  color: #cbd5e1;
+}
+
+/* Dark search */
+
+.app.dark-mode .panel-search {
+  background:
+    rgba(30, 41, 59, 0.96);
+
+  border-color:
+    rgba(148, 163, 184, 0.18);
+
+  color: #cbd5e1;
+}
+
+.app.dark-mode .panel-search input {
+  color: #ffffff;
+}
+
+.app.dark-mode .panel-search input::placeholder {
+  color: #94a3b8;
+}
+
+/* Dark layer buttons */
+
+.app.dark-mode .layer-button {
+  background:
+    rgba(30, 41, 59, 0.72);
+
+  color: #ffffff;
+
+  border-color:
+    rgba(148, 163, 184, 0.12);
+
+  box-shadow: none;
+}
+
+.app.dark-mode .layer-button:hover {
+  background:
+    rgba(51, 65, 85, 0.94);
+
+  border-color:
+    rgba(148, 163, 184, 0.30);
+
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+/*
+   IMPORTANT:
+   Selected ocean variable becomes solid white
+   with black text, exactly as requested.
+*/
+
+.app.dark-mode .layer-button.selected {
+  background: #ffffff;
+
+  color: #000000;
+
+  border-color: #ffffff;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.app.dark-mode .layer-button.selected strong {
+  color: #000000;
+}
+
+.app.dark-mode .layer-button.selected small {
+  color: #334155;
+}
+
+/* Dark layer icons */
+
+.app.dark-mode .layer-icon {
+  background:
+    rgba(15, 23, 42, 0.95);
+
+  border:
+    1px solid rgba(148, 163, 184, 0.12);
+}
+
+.app.dark-mode .layer-button.selected .layer-icon {
+  background:
+    #f1f5f9;
+
+  border-color:
+    rgba(15, 23, 42, 0.12);
+}
+
+/* Dark panel divider */
+
+.app.dark-mode .panel-divider {
+  background:
+    rgba(148, 163, 184, 0.16);
+}
+
+/* Dark depth */
+
+.app.dark-mode .depth-values {
+  color: #cbd5e1;
+}
+
+.app.dark-mode .depth-values strong {
+  color: #ffffff;
+}
+
+.app.dark-mode .depth-labels {
+  color: #94a3b8;
+}
+
+.app.dark-mode .depth-slider {
+  accent-color: #ffffff;
+}
+
+/* Dark menu button */
+
+.app.dark-mode .panel-toggle {
+  background:
+    rgba(15, 23, 42, 0.94);
+
+  border-color:
+    rgba(148, 163, 184, 0.22);
+}
+
+.app.dark-mode .panel-toggle:hover {
+  background:
+    rgba(30, 41, 59, 0.98);
+}
+
+.app.dark-mode .panel-toggle span {
+  background: #ffffff;
+}
+
+/* ============================================================
+   LIGHT THEME
+============================================================ */
+
+.app.light-mode {
+  background: #dff5fc;
+  color: #102a36;
+}
+
+.app.light-mode .header {
+  background:
+    rgba(246, 252, 255, 0.92);
+
+  color: #102a36;
+
+  border-bottom-color:
+    rgba(22, 135, 201, 0.16);
+
+  box-shadow:
+    0 2px 18px rgba(22, 135, 201, 0.10);
+}
+
+.app.light-mode .brand h1 {
+  color: #123d4b;
+}
+
+.app.light-mode .brand p {
+  color: #52717c;
+}
+
+.app.light-mode nav button {
+  color: #174758;
+
+  background:
+    rgba(255, 255, 255, 0.68);
+}
+
+.app.light-mode .ocean-panel {
+  background:
+    rgba(248, 253, 255, 0.94);
+
+  color: #163743;
+
+  border-color:
+    rgba(22, 135, 201, 0.16);
+
+  box-shadow:
+    0 12px 35px rgba(22, 135, 201, 0.14);
+}
+
+.app.light-mode .panel-section-title,
+.app.light-mode .panel-header {
+  color: #315663;
+}
+
+.app.light-mode .panel-search {
+  background:
+    rgba(225, 243, 249, 0.92);
+
+  border-color:
+    rgba(22, 135, 201, 0.16);
+}
+
+.app.light-mode .panel-search input {
+  color: #163743;
+}
+
+.app.light-mode .panel-search input::placeholder {
+  color: #6d8992;
+}
+
+.app.light-mode .layer-button {
+  color: #183d49;
+
+  background:
+    rgba(255, 255, 255, 0.55);
+}
+
+.app.light-mode .layer-button:hover {
+  background:
+    rgba(220, 243, 250, 0.9);
+}
+
+.app.light-mode .layer-button.selected {
+  background:
+    rgba(196, 235, 247, 0.92);
+
+  border-color:
+    rgba(22, 135, 201, 0.45);
+}
+
+.app.light-mode .layer-button small {
+  color: #63818b;
+}
+
+.app.light-mode .depth-values {
+  color: #244a57;
+}
+
+.app.light-mode .depth-labels {
+  color: #66838d;
+}
+
+/* Light dashboard */
+
+.app.light-mode .ocean-dash {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(23, 50, 77, 0.12);
+
+  box-shadow: 0 10px 30px rgba(23, 50, 77, 0.14);
+}
+
+.app.light-mode .dash-back {
+  background: rgba(23, 50, 77, 0.04);
+  border-color: rgba(23, 50, 77, 0.12);
+
+  color: #63818b;
+}
+
+.app.light-mode .dash-back:hover {
+  background: rgba(23, 50, 77, 0.08);
+
+  color: #17374d;
+}
+
+.app.light-mode .dash-toggle {
+  background: rgba(23, 50, 77, 0.05);
+  border-color: rgba(23, 50, 77, 0.20);
+}
+
+.app.light-mode .dash-toggle span {
+  background: #17374d;
+}
+
+.app.light-mode .dash-toggle.open span:first-child,
+.app.light-mode .dash-toggle.open span:nth-child(3) {
+  background: #087e8b;
+}
+
+.app.light-mode .dash-nav-btn {
+  color: #17374d;
+}
+
+.app.light-mode .dash-nav-btn:hover {
+  background: rgba(8, 126, 139, 0.08);
+  border-color: rgba(8, 126, 139, 0.18);
+
+  color: #087e8b;
+}
+
+.app.light-mode .dash-nav-btn.dash-nav-small {
+  color: #63818b;
+}
+
+.app.light-mode .dash-content-title {
+  border-bottom-color: rgba(23, 50, 77, 0.12);
+
+  color: #17374d;
+}
+
+.app.light-mode .dash-content-note {
+  color: #63818b;
+}
+
+.app.light-mode .dash-setting-row {
+  background: rgba(23, 50, 77, 0.04);
+  border-color: rgba(23, 50, 77, 0.14);
+
+  color: #17374d;
+}
+
+.app.light-mode .dash-setting-row:hover {
+  background: rgba(8, 126, 139, 0.08);
+}
+
+/* ============================================================
+   REGISTRATION SLOT (Profile section placeholder)
+============================================================ */
+
+.register-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 10px;
+  padding: 18px 14px;
+
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+  border-radius: 10px;
+  background: rgba(148, 163, 184, 0.06);
+
+  text-align: center;
+}
+
+.register-slot-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.12);
+
+  font-size: 18px;
+}
+
+.register-slot-title {
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.register-slot-note {
+  color: #94a3b8;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.app.light-mode .register-slot {
+  background: rgba(23, 50, 77, 0.04);
+  border-color: rgba(23, 50, 77, 0.18);
+}
+
+.app.light-mode .register-slot-title {
+  color: #17374d;
+}
+
+.app.light-mode .register-slot-note {
+  color: #63818b;
+}
+
+/* ============================================================
+   APP BOOT OVERLAY — branded loading screen
+============================================================ */
+
+.app-boot-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #04121f;
+}
+
+.app-boot-overlay--fade {
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.7s ease;
+}
+
+.app-boot-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-boot-mark {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 26px;
+
+  border: 2px solid #20b486;
+  border-color:
+    #20b486
+    #078b8c
+    rgba(32, 180, 134, 0.18)
+    rgba(32, 180, 134, 0.18);
+  border-radius: 50%;
+
+  animation: app-boot-spin 1.05s linear infinite;
+}
+
+@keyframes app-boot-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-boot-logo h1 {
+  margin: 0;
+
+  font-size: 34px;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #064e6b,
+      #078b8c,
+      #20b486
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-boot-logo p {
+  margin: 10px 0 0;
+
+  color: #087e8b;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 800px) {
+  .header {
+    height: 72px;
+    padding: 0 15px;
+  }
+
+  .brand h1 {
+    font-size: 22px;
+    letter-spacing: 3px;
+  }
+
+  .brand p {
+    font-size: 11px;
+  }
+
+  .header nav {
+    gap: 5px;
+  }
+
+  .header nav button {
+    height: 38px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+
+  .ocean-view {
+    height: calc(100vh - 72px);
+  }
+
+  .ocean-panel {
+    left: 10px;
+    top: 65px;
+    width: 285px;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 560px) {
+  .header {
+    height: 68px;
+  }
+
+  .brand h1 {
+    font-size: 19px;
+  }
+
+  .brand p {
+    font-size: 9px;
+  }
+
+  .header nav button {
+    padding: 0 6px;
+    font-size: 9px;
+  }
+
+  .ocean-view {
+    height: calc(100vh - 68px);
+  }
+
+  .ocean-panel {
+    width: 280px;
+  }
+}
+/* ============================================================
+   LIVE LAT / LON BAR
+============================================================ */
+
+.coordinate-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 8px 16px;
+
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(23, 50, 77, 0.12);
+  border-radius: 10px;
+
+  box-shadow: 0 4px 16px rgba(23, 50, 77, 0.12);
+
+  z-index: 30;
+
+  pointer-events: none;
+
+  font-family: Arial, sans-serif;
+}
+
+.coordinate-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coordinate-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #087e8b;
+}
+
+.coordinate-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #17324d;
+  min-width: 52px;
+}
+
+.coordinate-divider {
+  width: 1px;
+  
+  height: 18px; 
+  background: rgba(23, 50, 77, 0.16);
+}
+
+@media (max-width: 600px) {
+  .coordinate-bar {
+    bottom: 12px;
+    padding: 7px 12px;
+    gap: 10px;
+  }
+
+  .coordinate-value {
+    font-size: 11px;
+    min-width: 48px;
+  }
+}

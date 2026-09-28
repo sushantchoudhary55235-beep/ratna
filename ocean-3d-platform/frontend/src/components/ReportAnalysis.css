@@ -1,0 +1,568 @@
+/* ============================================================
+   REPORT ANALYSIS — view styling (additive, isolated)
+
+   Visual language follows the existing Ratnakara app:
+   Inter, dark navy glass panels, teal/cyan accents, rounded
+   corners, soft glow — no new theme invented.
+============================================================ */
+
+.report-root {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  overflow-y: auto;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: #020b14;
+  color: #e2e8f0;
+}
+
+.report-root.report-light {
+  background: #f4fafd;
+  color: #163743;
+}
+
+/* ---------------- Top bar ---------------- */
+
+.report-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 28px;
+  background: rgba(10, 18, 32, 0.96);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.report-light .report-topbar {
+  background: rgba(248, 253, 255, 0.96);
+  border-bottom-color: rgba(22, 135, 201, 0.2);
+}
+
+.report-back {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.6);
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.report-back:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(125, 211, 252, 0.5);
+}
+
+.report-light .report-back {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(22, 135, 201, 0.25);
+  color: #163743;
+}
+
+.report-light .report-back:hover {
+  background: #ffffff;
+  border-color: rgba(8, 126, 139, 0.5);
+}
+
+.report-title-block h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #064e6b, #078b8c, #20b486);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.report-light .report-title-block h1 {
+  background: linear-gradient(90deg, #064e6b, #078b8c, #20b486);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.report-title-block p {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: #94a3b8;
+  letter-spacing: 0.4px;
+}
+
+.report-light .report-title-block p {
+  color: #63818b;
+}
+
+.report-topbar-meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.report-demo-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 216, 138, 0.45);
+  background: rgba(246, 216, 138, 0.12);
+  color: #f6d88a;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.report-light .report-demo-chip {
+  border-color: rgba(160, 120, 20, 0.35);
+  background: rgba(246, 216, 138, 0.2);
+  color: #8a6d1f;
+}
+
+/* ---------------- Main column ---------------- */
+
+.report-main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 26px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ---------------- Panels ---------------- */
+
+.report-panel {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 14px;
+  background: rgba(10, 18, 32, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  padding: 20px 22px;
+}
+
+.report-light .report-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(22, 135, 201, 0.18);
+  box-shadow: 0 8px 26px rgba(23, 50, 77, 0.1);
+}
+
+.report-panel-title {
+  margin: 0 0 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  color: #7dd3fc;
+}
+
+.report-light .report-panel-title {
+  color: #087e8b;
+}
+
+/* ---------------- Summary cards ---------------- */
+
+.report-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 860px) {
+  .report-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .report-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-card {
+  border: 1px solid;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.report-light .report-card {
+  background: rgba(248, 253, 255, 0.9);
+}
+
+.report-card-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  margin-bottom: 8px;
+}
+
+.report-card-value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #f7f1e4;
+}
+
+.report-light .report-card-value {
+  color: #163743;
+}
+
+.report-card-sub {
+  margin-top: 6px;
+  font-size: 10.5px;
+  color: #94a3b8;
+}
+
+.report-light .report-card-sub {
+  color: #63818b;
+}
+
+.report-focus-note {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.report-light .report-focus-note {
+  color: #63818b;
+}
+
+/* ---------------- Stat rows ---------------- */
+
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 26px;
+}
+
+@media (max-width: 640px) {
+  .report-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-stat-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  font-size: 12px;
+}
+
+.report-light .report-stat-row {
+  border-bottom-color: rgba(22, 135, 201, 0.12);
+}
+
+.report-stat-label {
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.report-light .report-stat-label {
+  color: #63818b;
+}
+
+.report-stat-value {
+  text-align: right;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.report-light .report-stat-value {
+  color: #163743;
+}
+
+/* ---------------- Tabs ---------------- */
+
+.report-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.report-tab {
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.5);
+  color: #94a3b8;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.report-tab:hover {
+  border-color: rgba(125, 211, 252, 0.55);
+  color: #e2e8f0;
+}
+
+.report-tab.active {
+  background: rgba(125, 211, 252, 0.1);
+  box-shadow: 0 0 14px rgba(125, 211, 252, 0.15);
+}
+
+.report-light .report-tab {
+  background: rgba(248, 253, 255, 0.9);
+  border-color: rgba(22, 135, 201, 0.25);
+  color: #63818b;
+}
+
+.report-light .report-tab:hover {
+  color: #163743;
+  border-color: rgba(8, 126, 139, 0.5);
+}
+
+/* ---------------- Variable stats ---------------- */
+
+.report-stats-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 26px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .report-stats-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------- Graphs ---------------- */
+
+.report-graph {
+  margin-top: 6px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 10px;
+  padding: 12px 10px 8px;
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.report-light .report-graph {
+  background: rgba(248, 253, 255, 0.85);
+  border-color: rgba(22, 135, 201, 0.15);
+}
+
+.report-graph-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #94a3b8;
+  margin: 0 0 6px 6px;
+}
+
+.report-light .report-graph-title {
+  color: #63818b;
+}
+
+.report-graph svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.report-graph-tick {
+  fill: #94a3b8;
+  font-size: 9px;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.report-graph-hover {
+  fill: #e2e8f0;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.report-light .report-graph-tick,
+.report-light .report-graph-hover {
+  fill: #63818b;
+}
+
+.report-graph-caption {
+  margin: 4px 6px 2px;
+  font-size: 9.5px;
+  color: #64748b;
+  letter-spacing: 0.3px;
+}
+
+.report-uvgap {
+  height: 8px;
+}
+
+/* ---------------- Tables ---------------- */
+
+.report-subtable {
+  margin-top: 6px;
+}
+
+.report-subtable-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.report-light .report-subtable-title {
+  color: #63818b;
+}
+
+.report-table-scroll {
+  overflow-x: auto;
+}
+
+.report-subtable table,
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.report-subtable th,
+.report-table th {
+  text-align: left;
+  padding: 7px 10px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  color: #7dd3fc;
+  border-bottom: 1px solid rgba(125, 211, 252, 0.25);
+  white-space: nowrap;
+}
+
+.report-light .report-subtable th,
+.report-light .report-table th {
+  color: #087e8b;
+  border-bottom-color: rgba(8, 126, 139, 0.3);
+}
+
+.report-subtable td,
+.report-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.09);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.report-light .report-subtable td,
+.report-light .report-table td {
+  color: #163743;
+  border-bottom-color: rgba(22, 135, 201, 0.1);
+}
+
+/* ---------------- Links / downloads ---------------- */
+
+.report-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #7dd3fc;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.report-link:hover {
+  color: #bae6fd;
+}
+
+.report-light .report-link {
+  color: #087e8b;
+}
+
+.report-download-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.report-download-btn {
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.55);
+  background: rgba(125, 211, 252, 0.12);
+  color: #eaf6ff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.report-download-btn:hover {
+  background: rgba(125, 211, 252, 0.22);
+  box-shadow: 0 0 18px rgba(125, 211, 252, 0.3);
+}
+
+.report-download-btn--ghost {
+  border-color: rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.4);
+  color: #cbd5e1;
+}
+
+.report-download-btn--ghost:hover {
+  border-color: rgba(125, 211, 252, 0.5);
+  box-shadow: none;
+}
+
+.report-light .report-download-btn {
+  background: rgba(8, 126, 139, 0.1);
+  border-color: rgba(8, 126, 139, 0.45);
+  color: #065a63;
+}
+
+.report-light .report-download-btn:hover {
+  background: rgba(8, 126, 139, 0.18);
+}
+
+.report-light .report-download-btn--ghost {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(22, 135, 201, 0.3);
+  color: #163743;
+}
+
+/* ---------------- Demo banner / footer ---------------- */
+
+.report-demo-banner {
+  margin-top: 14px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(246, 216, 138, 0.35);
+  background: rgba(246, 216, 138, 0.08);
+  color: #f6d88a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.report-light .report-demo-banner {
+  border-color: rgba(160, 120, 20, 0.3);
+  background: rgba(246, 216, 138, 0.15);
+  color: #8a6d1f;
+}
+
+.report-footer-note {
+  font-size: 10px;
+  color: #64748b;
+  text-align: center;
+  letter-spacing: 0.4px;
+  padding-bottom: 10px;
+}
+
+.report-light .report-footer-note {
+  color: #8aa4ad;
+}
