@@ -56,6 +56,19 @@ MAX_MAX_POINTS = 10000
 
 SOURCE_NAME = "Copernicus Marine"
 
+# --- Deployment demo fallback (ONLY used when the real model NetCDF file is
+# --- missing, e.g. on Render Free). In-memory deterministic temperature grid;
+# --- the real code path below is untouched when the dataset file exists.
+DEMO_SOURCE_NAME = "DEMO DATA"
+DEMO_TIMESTAMP = "2026-06-23T00:00:00"
+DEMO_GRID_LAT = 40  # grid rows (latitude)
+DEMO_GRID_LON = 80  # grid columns (longitude)
+# Matches the real model's depth axis so depth selection behaves identically.
+DEMO_DEPTHS_M: tuple[float, ...] = (
+    0.49, 1.54, 5.08, 15.81, 34.43, 65.81, 109.73,
+    155.85, 222.48, 318.13, 453.94, 541.09,
+)
+
 _dataset_cache: dict[str, xr.Dataset] = {}
 
 
@@ -164,6 +177,38 @@ def _display_unit(ds: xr.Dataset, source_var: str, variable: str) -> str:
     return DEFAULT_UNITS[variable]
 
 
+def _demo_temperature_dataset() -> xr.Dataset:
+    """Build the in-memory demo dataset for the temperature fallback.
+
+    Deterministic pure functions of latitude/longitude/depth — no random
+    values, no files, no external data. Used ONLY when the real model
+    NetCDF is unavailable (e.g. Render Free deployment).
+    """
+    lat = np.linspace(-30.0, 25.0, DEMO_GRID_LAT)    # Arabian Sea region span
+    lon = np.linspace(45.0, 99.9167, DEMO_GRID_LON)  # Arabian Sea region span
+    depth = np.asarray(DEMO_DEPTHS_M, dtype=float)
+    time = np.array([np.datetime64(DEMO_TIMESTAMP)])
+
+    lon2d, lat2d = np.meshgrid(lon, lat)
+    depth2d = depth.reshape(-1, 1, 1)
+
+    # Deterministic spatial structure: large-scale latitudinal warming plus
+    # a smooth longitude dipole; no randomness anywhere.
+    spatial = 28.5 - 0.12 * (lat2d + 30.0) + 1.5 * np.cos(
+        np.deg2rad(lon2d) * 3.0
+    ) * np.cos(np.deg2rad(lat2d) * 2.0)
+    # Depth decay: surface ~28 °C easing toward ~4 °C at 541 m.
+    temp = spatial[None, :, :] * np.exp(-depth2d / 260.0) + 4.0 * (
+        1.0 - np.exp(-depth2d / 260.0)
+    )
+    temp = temp[np.newaxis, ...]  # add the single time axis -> (1, depth, lat, lon)
+
+    return xr.Dataset(
+        {"thetao": (("time", "depth", "latitude", "longitude"), temp)},
+        coords={"time": time, "depth": depth, "latitude": lat, "longitude": lon},
+    )
+
+
 def process_model_field(
     *,
     variable: str,
@@ -186,7 +231,20 @@ def process_model_field(
     if not math.isfinite(depth) or depth < 0:
         raise InvalidDepthError(f"Invalid depth '{depth}': must be a non-negative number")
 
-    ds = dataset if dataset is not None else load_dataset(path)
+    if dataset is not None:
+        ds = dataset
+        demo_mode = False
+    else:
+        try:
+            ds = load_dataset(path)
+            demo_mode = False
+        except DatasetUnavailableError:
+            if variable != "temperature":
+                raise  # only temperature has a demo fallback; keep existing error
+            # Demo mode: real model file unavailable (e.g. Render Free).
+            # Serve the deterministic in-memory temperature field instead.
+            ds = _demo_temperature_dataset()
+            demo_mode = True
     source_var = VARIABLE_MAP[variable]
     if source_var not in ds.data_vars:
         raise DatasetUnavailableError(
@@ -320,7 +378,7 @@ def process_model_field(
         "unit": _display_unit(ds, source_var, variable),
         "depth": selected_depth,
         "time": str(np.datetime64(selected_time, "s")),
-        "source": SOURCE_NAME,
+        "source": DEMO_SOURCE_NAME if demo_mode else SOURCE_NAME,
         "points": points,
         "requested_depth_m": float(depth),
         "depth_index": depth_index,
